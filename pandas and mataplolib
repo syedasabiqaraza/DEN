@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = sns.load_dataset('iris')
+
+print(df.head())
+print(df.dtypes)
+print("NaN values:", df.isnull().sum())
+
+plt.figure(figsize=(10, 5))
+sns.histplot(df['sepal_length'], bins=20, kde=True, color='green')
+plt.title('Sepal Length Distribution', fontsize=16)
+plt.xlabel('Sepal Length (cm)', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+sns.scatterplot(x='sepal_length', y='sepal_width', hue='species', data=df, s=100, palette='viridis')
+plt.title('Sepal Length vs. Sepal Width by Species', fontsize=16)
+plt.xlabel('Sepal Length (cm)', fontsize=12)
+plt.ylabel('Sepal Width (cm)', fontsize=12)
+plt.legend(title='Species', title_fontsize='13', fontsize='11')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+top_10_sepal_length = df.nlargest(10, 'sepal_length')
+plt.figure(figsize=(10, 5))
+sns.barplot(x='species', y='sepal_length', data=top_10_sepal_length, palette='Set2')
+plt.title('Top 10 Sepal Length by Species', fontsize=16)
+plt.xlabel('Species', fontsize=12)
+plt.ylabel('Sepal Length (cm)', fontsize=12)
+plt.xticks(rotation=45, fontsize=11)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+sns.barplot(x='species', y='petal_length', data=df, estimator=sum, palette='Set1')
+plt.title('Total Petal Length by Species', fontsize=16)
+plt.xlabel('Species', fontsize=12)
+plt.ylabel('Total Petal Length (cm)', fontsize=12)
+plt.xticks(rotation=45, fontsize=11)
+plt.tight_layout()
+plt.show()
