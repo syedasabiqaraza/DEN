@@ -1,0 +1,46 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = {
+    'Category': ['A', 'B', 'C', 'D', 'E'],
+    'Values': [23, 45, 56, 78, 89]
+}
+df = pd.DataFrame(data)
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Category', y='Values', data=df)
+plt.title('Bar Plot of Categories')
+plt.xlabel('Category')
+plt.ylabel('Values')
+plt.show()
+plt.figure(figsize=(8, 8))
+plt.pie(df['Values'], labels=df['Category'], autopct='%1.1f%%', startangle=140)
+plt.title('Pie Chart of Categories')
+plt.show()
+plt.figure(figsize=(10, 6))
+plt.plot(df['Category'], df['Values'], 'o')
+plt.title('Dot Plot of Categories')
+plt.xlabel('Category')
+plt.ylabel('Values')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Category', y='Values', data=df)
+plt.title('Bar Plot of Categories')
+plt.xlabel('Category')
+plt.ylabel('Values')
+plt.savefig('bar_plot.png')
+
+
+plt.figure(figsize=(8, 8))
+plt.pie(df['Values'], labels=df['Category'], autopct='%1.1f%%', startangle=140)
+plt.title('Pie Chart of Categories')
+plt.savefig('pie_chart.png')
+
+
+plt.figure(figsize=(10, 6))
+plt.plot(df['Category'], df['Values'], 'o')
+plt.title('Dot Plot of Categories')
+plt.xlabel('Category')
+plt.ylabel('Values')
+plt.savefig('dot_plot.png')
