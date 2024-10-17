@@ -1,0 +1,128 @@
+import json
+
+
+TASKS_FILE = 'tasks.json'
+
+def load_tasks():
+    try:
+        with open(TASKS_FILE, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+
+def save_tasks(tasks):
+    with open(TASKS_FILE, 'w') as file:
+        json.dump(tasks, file)
+
+def add_task(tasks):
+    task_id = len(tasks) + 1
+    description = input("Enter task description: ")
+    task = {'id': task_id, 'description': description, 'status': 'pending'}
+    tasks.append(task)
+    print("Task added successfully.")
+
+def view_tasks(tasks):
+    if not tasks:
+        print("No tasks to display.")
+    else:
+        print("ID\tDescription\tStatus")
+        for task in tasks:
+            print(f"{task['id']}\t{task['description']}\t{task['status']}")
+
+def remove_task(tasks):
+    task_id = int(input("Enter task ID to remove: "))
+    tasks = [task for task in tasks if task['id'] != task_id]
+    print("Task removed successfully.")
+    return tasks
+
+def mark_task_completed(tasks):
+    task_id = int(input("Enter task ID to mark as completed: "))
+    for task in tasks:
+        if task['id'] == task_id:
+            task['status'] = 'completed'
+            print("Task marked as completed.")
+            break
+    else:
+        print("Task ID not found.")
+
+def edit_task(tasks):
+    task_id = int(input("Enter task ID to edit: "))
+    new_description = input("Enter new task description: ")
+    for task in tasks:
+        if task['id'] == task_id:
+            task['description'] = new_description
+            print("Task description updated.")
+            break
+    else:
+        print("Task ID not found.")
+
+def search_task(tasks):
+    keyword = input("Enter keyword to search: ").lower()
+    filtered_tasks = [task for task in tasks if keyword in task['description'].lower()]
+    view_tasks(filtered_tasks)
+
+def filter_tasks(tasks):
+    status = input("Enter status to filter (pending/completed): ").lower()
+    filtered_tasks = [task for task in tasks if task['status'] == status]
+    view_tasks(filtered_tasks)
+
+def clear_all_tasks():
+    confirm = input("Are you sure you want to clear all tasks? (yes/no): ").lower()
+    if confirm == 'yes':
+        print("All tasks cleared.")
+        return []
+    return None
+
+def sort_tasks(tasks):
+    sort_by = input("Sort by (id/status): ").lower()
+    if sort_by == 'id':
+        tasks.sort(key=lambda task: task['id'])
+    elif sort_by == 'status':
+        tasks.sort(key=lambda task: task['status'])
+    print("Tasks sorted successfully.")
+
+def main():
+    tasks = load_tasks()
+    while True:
+        print("\n--- To-Do List Menu ---")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Remove Task")
+        print("4. Mark as Completed")
+        print("5. Edit Task")
+        print("6. Search Task")
+        print("7. Filter Tasks")
+        print("8. Clear All Tasks")
+        print("9. Sort Tasks")
+        print("0. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            add_task(tasks)
+        elif choice == '2':
+            view_tasks(tasks)
+        elif choice == '3':
+            tasks = remove_task(tasks)
+        elif choice == '4':
+            mark_task_completed(tasks)
+        elif choice == '5':
+            edit_task(tasks)
+        elif choice == '6':
+            search_task(tasks)
+        elif choice == '7':
+            filter_tasks(tasks)
+        elif choice == '8':
+            tasks = clear_all_tasks() or tasks
+        elif choice == '9':
+            sort_tasks(tasks)
+        elif choice == '0':
+            save_tasks(tasks)
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
